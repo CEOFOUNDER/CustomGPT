@@ -1,0 +1,49 @@
+{
+  "brandName": "CustomGPT.ai",
+  "affiliateLink": "https://customgpt.ai/?fpr=gilles37",
+  "couponCode": "ONEMONTHFREE",
+  "couponLabel": "$99 discount coupon",
+  "siteBaseUrl": "https://ceofounder.github.io/CustomGPT",
+  "brandAssetsDir": "affiliate-assets",
+  "campaignName": "customgpt_b2b_ai_assistant",
+  "startDate": "2026-05-13",
+  "timezone": "Europe/London",
+  "dailySlots": ["09:10", "12:40", "16:20"],
+  "primaryNiches": [
+    {
+      "slug": "ecommerce",
+      "name": "Ecommerce Stores",
+      "audience": "store owners and operators",
+      "pain": "repetitive product, shipping, returns, and policy questions",
+      "outcome": "answer customer questions from your store content before they abandon their cart"
+    },
+    {
+      "slug": "shopify",
+      "name": "Shopify Stores",
+      "audience": "Shopify merchants",
+      "pain": "customers asking the same product, size, shipping, and returns questions",
+      "outcome": "turn store pages, policies, and FAQs into an AI shopping assistant"
+    },
+    {
+      "slug": "support",
+      "name": "Customer Support Teams",
+      "audience": "small support teams",
+      "pain": "support queues filled with repeated questions",
+      "outcome": "deflect routine tickets with an AI assistant trained on your knowledge base"
+    },
+    {
+      "slug": "agencies",
+      "name": "Agencies",
+      "audience": "marketing, web, and AI automation agencies",
+      "pain": "clients asking for AI features without a custom engineering budget",
+      "outcome": "launch client-ready AI assistants trained on approved client content"
+    },
+    {
+      "slug": "courses",
+      "name": "Course Creators",
+      "audience": "course creators and education businesses",
+      "pain": "students asking repeated lesson, policy, and onboarding questions",
+      "outcome": "give learners instant answers from course material and FAQs"
+    }
+  ]
+}
