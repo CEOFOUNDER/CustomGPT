@@ -69,6 +69,10 @@ Monthly:
 
 - Add one new niche after ecommerce/support pages have had time to collect clicks.
 
+## Deployment
+
+Last deployment trigger: 2026-05-12T17:25:00Z
+
 ## Compliance Notes
 
 - Keep affiliate disclosure visible on every landing page.
