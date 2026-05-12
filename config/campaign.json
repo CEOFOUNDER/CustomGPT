@@ -7,6 +7,7 @@
   "brandAssetsDir": "affiliate-assets",
   "campaignName": "customgpt_b2b_ai_assistant",
   "startDate": "2026-05-13",
+  "scheduleMode": "rolling",
   "timezone": "Europe/London",
   "dailySlots": ["09:10", "12:40", "16:20"],
   "metricsImportUrl": "",
