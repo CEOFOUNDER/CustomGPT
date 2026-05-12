@@ -9,6 +9,7 @@
   "startDate": "2026-05-13",
   "timezone": "Europe/London",
   "dailySlots": ["09:10", "12:40", "16:20"],
+  "metricsImportUrl": "",
   "primaryNiches": [
     {
       "slug": "ecommerce",
