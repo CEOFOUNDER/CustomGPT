@@ -47,6 +47,17 @@ jobs:
         run: node scripts/render-cards.js
       - name: Generate Publer exports
         run: node scripts/publer-export.js
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
       - name: Publish or dry-run Buffer queue
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
@@ -62,14 +73,3 @@ jobs:
           else
             node scripts/buffer-publish.js
           fi
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
