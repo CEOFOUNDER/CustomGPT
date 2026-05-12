@@ -1,0 +1,13 @@
+{
+  "name": "customgpt-affiliate-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Automated CustomGPT.ai affiliate content funnel generator.",
+  "scripts": {
+    "generate": "node scripts/generate.js",
+    "build": "node scripts/generate.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
