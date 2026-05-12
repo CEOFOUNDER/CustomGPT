@@ -4,8 +4,14 @@
   "private": true,
   "description": "Automated CustomGPT.ai affiliate content funnel generator.",
   "scripts": {
-    "generate": "node scripts/generate.js",
-    "build": "node scripts/generate.js"
+    "generate": "node scripts/generate-machine.js",
+    "render:cards": "node scripts/render-cards.js",
+    "inspect:buffer": "node scripts/buffer-inspect.js",
+    "publish:buffer": "node scripts/buffer-publish.js",
+    "build": "node scripts/generate-machine.js && node scripts/render-cards.js && node scripts/publer-export.js"
+  },
+  "dependencies": {
+    "playwright": "^1.56.1"
   },
   "engines": {
     "node": ">=20"
