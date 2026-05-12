@@ -4,6 +4,11 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+    inputs:
+      publish_to_buffer:
+        description: "Submit this generated queue to Buffer if secrets are configured"
+        required: false
+        default: "false"
   schedule:
     - cron: "0 8 * * 1"
 
@@ -32,10 +37,31 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Install dependencies
+        run: npm install
+      - name: Install browser renderer
+        run: npx playwright install --with-deps chromium
       - name: Generate funnel
-        run: node scripts/generate.js
+        run: node scripts/generate-machine.js
+      - name: Render PNG cards
+        run: node scripts/render-cards.js
       - name: Generate Publer exports
         run: node scripts/publer-export.js
+      - name: Publish or dry-run Buffer queue
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_CHANNEL_MAP: ${{ secrets.BUFFER_CHANNEL_MAP }}
+          BUFFER_CHANNELS: ${{ vars.BUFFER_CHANNELS }}
+          BUFFER_MAX_POSTS: ${{ vars.BUFFER_MAX_POSTS }}
+          BUFFER_MODE: ${{ vars.BUFFER_MODE }}
+          BUFFER_AUTOPUBLISH: ${{ vars.BUFFER_AUTOPUBLISH }}
+          DISPATCH_PUBLISH: ${{ inputs.publish_to_buffer }}
+        run: |
+          if [ -n "$BUFFER_API_KEY" ] && [ -n "$BUFFER_CHANNEL_MAP" ] && { [ "$BUFFER_AUTOPUBLISH" = "true" ] || [ "$DISPATCH_PUBLISH" = "true" ]; }; then
+            BUFFER_PUBLISH=true node scripts/buffer-publish.js
+          else
+            node scripts/buffer-publish.js
+          fi
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
