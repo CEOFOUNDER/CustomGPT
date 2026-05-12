@@ -1,19 +1,13 @@
 # CustomGPT.ai Affiliate Engine
 
-This is a local-first, no-paid-tool funnel generator for continuously marketing CustomGPT.ai with your affiliate link and coupon.
+This repo is an API-first affiliate funnel for continuously marketing CustomGPT.ai with:
 
-It creates:
-
-- Static landing pages under `site/`
-- Tracked affiliate links in `data/links.csv`
-- Content inventory in `data/content.csv`
-- Scheduler CSVs under `exports/scheduler/`
-- Social card SVGs under `assets/cards/`
-- A lightweight weekly report under `reports/`
-
-## Configure
-
-Edit `config/campaign.json` if you need to change the affiliate link, coupon, site URL, niches, or posting cadence.
+- GitHub Pages bridge pages
+- Tracked landing links and affiliate links
+- HTML-rendered PNG social cards
+- Buffer API publishing
+- CSV exports as a fallback only
+- Weekly GitHub Actions automation
 
 Current offer:
 
@@ -21,61 +15,96 @@ Current offer:
 - Coupon code: `ONEMONTHFREE`
 - Coupon framing: `$99 discount coupon`
 
-## Generate Everything
+## Operating Model
 
-```bash
-node scripts/generate.js
+The intended machine-to-machine loop is:
+
+```text
+GitHub Actions
+  -> generate landing pages and tracked links
+  -> render PNG social cards
+  -> create Buffer queue payload
+  -> optionally submit posts to Buffer by API
+  -> deploy the updated site to GitHub Pages
 ```
 
-If `npm` is available on the machine, `npm run generate` works too.
+No browser uploads are required once Buffer is connected and credentials are saved.
 
-## Add Official Affiliate Assets
-
-Download approved CustomGPT.ai assets from your FirstPromoter area:
-
-https://customgpt.firstpromoter.com/my-assets
-
-Put the downloaded files or unzipped folders into `affiliate-assets/`, then run:
+## Local Commands
 
 ```bash
-node scripts/generate.js
+npm install
+npx playwright install chromium
+npm run build
 ```
 
-The generator copies supported files into `site/assets/brand/` and creates `data/asset_manifest.csv`.
+Useful individual commands:
 
-Open `site/index.html` in a browser to preview the hub page.
+```bash
+npm run generate
+npm run render:cards
+npm run publish:buffer
+```
 
-## Minimum-Intervention Workflow
+`npm run publish:buffer` is a dry run unless `BUFFER_PUBLISH=true` is set.
 
-1. Run `node scripts/generate.js`.
-2. Publish the `site/` folder to GitHub Pages, Cloudflare Pages, Netlify, or any static host.
-3. Upload `exports/scheduler/customgpt_scheduler.csv` to a social scheduler such as Buffer, Publer, Metricool, or Pinterest if supported.
-4. Repeat weekly, or automate the command with Codex/GitHub Actions.
+## GitHub Secrets And Variables
 
-## Automation Loop
+Required secret for live Buffer publishing:
 
-Daily:
+- `BUFFER_API_KEY`: Buffer API key.
+- `BUFFER_CHANNEL_MAP`: JSON object mapping generated channel names to Buffer channel IDs.
 
-- Generate new post ideas and tracked links.
-- Create social card assets.
+Example `BUFFER_CHANNEL_MAP`:
 
-Weekly:
+```json
+{
+  "Pinterest": "buffer_pinterest_channel_id",
+  "LinkedIn": "buffer_linkedin_channel_id"
+}
+```
 
-- Export a scheduler CSV.
-- Review the report.
-- Scale the strongest niche/topic.
+Recommended repository variables:
 
-Monthly:
+- `BUFFER_AUTOPUBLISH`: set to `true` only after the first dry run looks right.
+- `BUFFER_CHANNELS`: comma-separated channel names, for example `Pinterest,LinkedIn`.
+- `BUFFER_MAX_POSTS`: start with `5` or `10` to stay inside Buffer Free queue limits.
+- `BUFFER_MODE`: use `addToQueue` for lowest-maintenance scheduling. `customScheduled` is supported but less forgiving.
 
-- Add one new niche after ecommerce/support pages have had time to collect clicks.
+## Buffer Setup
 
-## Deployment
+1. Create or use a Buffer account.
+2. Connect Pinterest and LinkedIn channels.
+3. Create a Pinterest board in Pinterest first, then ensure Buffer can publish to it.
+4. Create a Buffer API key.
+5. Run `npm run inspect:buffer` with `BUFFER_API_KEY` to find organization and channel IDs.
+6. Add the IDs to `BUFFER_CHANNEL_MAP`.
+7. Run the GitHub workflow once with `publish_to_buffer=false`.
+8. Review the dry-run log.
+9. Set `BUFFER_AUTOPUBLISH=true` when ready.
 
-Last deployment trigger: 2026-05-12T17:25:00Z
+## Generated Outputs
+
+- `site/`: GitHub Pages site.
+- `site/assets/cards/*.png`: scheduler-ready social cards.
+- `site/exports/buffer_queue.json`: machine-readable Buffer queue.
+- `site/exports/customgpt_scheduler.csv`: fallback scheduler CSV.
+- `site/exports/publer_*.csv`: fallback Publer CSVs.
+- `data/card_manifest.json`: card render manifest.
+- `data/links.csv`: tracked landing and affiliate URLs.
+- `site/reports/optimization.html`: simple performance report.
+
+## Schedule
+
+`config/campaign.json` uses `"scheduleMode": "rolling"` by default. Each weekly run starts the generated queue from tomorrow, rather than reusing a stale fixed date. To freeze dates, set:
+
+```json
+"scheduleMode": "fixed"
+```
 
 ## Compliance Notes
 
-- Keep affiliate disclosure visible on every landing page.
+- Affiliate disclosure remains visible on every landing page.
 - Do not claim guaranteed revenue, guaranteed support savings, or guaranteed conversions.
 - Avoid automated posting into communities where self-promotion is not allowed.
 - Keep CustomGPT.ai brand claims aligned with official materials.
