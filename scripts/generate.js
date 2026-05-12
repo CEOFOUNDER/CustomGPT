@@ -3,7 +3,7 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const config = JSON.parse(fs.readFileSync(path.join(root, 'config', 'campaign.json'), 'utf8'));
-['site','site/pages','site/use-cases','site/exports','site/assets/brand','data','assets/cards','exports/scheduler','reports','affiliate-assets'].forEach((dir) => fs.mkdirSync(path.join(root, dir), { recursive: true }));
+['site','site/pages','site/use-cases','site/exports','site/assets/brand','site/assets/cards','data','assets/cards','exports/scheduler','reports','affiliate-assets'].forEach((dir) => fs.mkdirSync(path.join(root, dir), { recursive: true }));
 
 const topics = [
   ['faq-ai-assistant','Turn your FAQ page into an AI assistant','Visitors leave when simple questions take too long to answer.','Your FAQ page should not just sit there. It can answer customers instantly.'],
@@ -60,15 +60,19 @@ function useCase(niche, topic) {
   const aff = affiliateUrl(niche, topic, ['seo-use-case','seo','page']);
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)} | CustomGPT.ai</title><meta name="description" content="${esc(topic[2])} See how ${esc(niche.name.toLowerCase())} can use CustomGPT.ai with coupon ${esc(config.couponCode)}."><link rel="stylesheet" href="../styles.css"></head><body><header class="topbar"><a href="../index.html" class="brand">AI Assistant Offers</a><nav><a href="../pages/ecommerce.html">Ecommerce</a><a href="../pages/shopify.html">Shopify</a><a href="../pages/support.html">Support</a></nav></header><main><section class="hero"><div><p class="eyebrow">${esc(config.couponLabel)}: ${esc(config.couponCode)}</p><h1>${esc(title)}</h1><p class="lede">${esc(topic[3])} ${esc(topic[2])}</p><div class="actions"><a class="button" href="${esc(aff)}" rel="sponsored nofollow">Try CustomGPT.ai with ${esc(config.couponCode)}</a><a class="secondary" href="../pages/${esc(niche.slug)}.html">View ${esc(niche.name)} funnel</a></div></div><aside class="offer"><strong>Use case</strong><p>${esc(niche.outcome)}.</p><strong>Suggested setup</strong><p>Train the assistant on approved website pages, help docs, PDFs, FAQs, product content, and policy pages.</p></aside></section><section class="band"><h2>What to Train It On</h2><div class="grid"><article class="use-case"><h3>Website pages</h3><p>Give visitors answers from approved public information.</p></article><article class="use-case"><h3>FAQs and policies</h3><p>Turn repeated questions into immediate, consistent responses.</p></article><article class="use-case"><h3>Product or service docs</h3><p>Help prospects understand fit, features, pricing, and next steps.</p></article></div></section><section class="band compact"><h2>Simple Test</h2><p>Start with one narrow assistant for this use case, publish it on a low-risk page, and measure clicks, questions, and qualified leads before expanding.</p><a class="button" href="${esc(aff)}" rel="sponsored nofollow">Start with coupon ${esc(config.couponCode)}</a></section></main><footer><p>Affiliate disclosure: this page contains affiliate links. If you sign up through a link, we may earn a commission at no extra cost to you.</p></footer></body></html>`;
 }
+function distribution() {
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Distribution Files | CustomGPT.ai Funnel</title><meta name="description" content="Download scheduler CSVs and tracked link exports for the CustomGPT.ai affiliate funnel."><link rel="stylesheet" href="styles.css"></head><body><header class="topbar"><a href="index.html" class="brand">AI Assistant Offers</a><nav><a href="pages/ecommerce.html">Ecommerce</a><a href="pages/support.html">Support</a><a href="sitemap.xml">Sitemap</a></nav></header><main><section class="hero"><div><p class="eyebrow">Publishing Queue</p><h1>Scheduler files for the CustomGPT.ai funnel</h1><p class="lede">Use these CSV exports to queue posts in a social scheduler. Every link routes through the tracked landing pages and keeps the ${esc(config.couponCode)} coupon offer intact.</p></div><aside class="offer"><strong>Best first channel</strong><p>Start with Pinterest and LinkedIn. Add Shorts once you are ready to produce video from the scripts.</p></aside></section><section class="band"><h2>Download Exports</h2><div class="grid"><article class="use-case"><h3>All channels</h3><p><a href="exports/customgpt_scheduler.csv">customgpt_scheduler.csv</a></p></article><article class="use-case"><h3>LinkedIn</h3><p><a href="exports/linkedin_scheduler.csv">linkedin_scheduler.csv</a></p></article><article class="use-case"><h3>Pinterest</h3><p><a href="exports/pinterest_scheduler.csv">pinterest_scheduler.csv</a></p></article><article class="use-case"><h3>YouTube Shorts</h3><p><a href="exports/youtube-shorts_scheduler.csv">youtube-shorts_scheduler.csv</a></p></article><article class="use-case"><h3>Tracked links</h3><p><a href="exports/links.csv">links.csv</a></p></article></div></section><section class="band compact"><h2>Minimum-Intervention Workflow</h2><p>Import one channel CSV into your scheduler, map the text, link, date, time, and image columns, then let the scheduler publish the queue. Repeat weekly after the automated rebuild.</p></section></main><footer><p>Affiliate disclosure: this page supports an affiliate funnel and contains links that may earn a commission.</p></footer></body></html>`;
+}
 function index() {
   const links = config.primaryNiches.map((n) => `<a class="niche-link" href="pages/${n.slug}.html"><strong>${esc(n.name)}</strong><span>${esc(n.outcome)}</span></a>`).join('');
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CustomGPT.ai AI Assistant Funnel</title><meta name="description" content="Find the right CustomGPT.ai use case and use coupon code ${esc(config.couponCode)}."><link rel="stylesheet" href="styles.css"></head><body><header class="topbar"><a href="index.html" class="brand">AI Assistant Offers</a><nav><a href="pages/ecommerce.html">Ecommerce</a><a href="pages/support.html">Support</a><a href="pages/agencies.html">Agencies</a></nav></header><main><section class="hero"><div><p class="eyebrow">${esc(config.couponLabel)}: ${esc(config.couponCode)}</p><h1>Build an AI assistant trained on your business content</h1><p class="lede">Use CustomGPT.ai to turn websites, help docs, PDFs, product pages, and FAQs into a no-code AI assistant for customers or teams.</p><div class="actions"><a class="button" href="pages/ecommerce.html">Start with ecommerce</a><a class="secondary" href="pages/support.html">Support team use case</a></div></div><aside class="offer"><strong>Offer</strong><p>Use coupon code <b>${esc(config.couponCode)}</b> for the ${esc(config.couponLabel)}.</p><strong>Affiliate note</strong><p>Links on this site may earn a commission.</p></aside></section><section class="band"><h2>Choose a Use Case</h2><div class="niche-list">${links}</div></section></main><footer><p>Affiliate disclosure: this page contains affiliate links. If you sign up through a link, we may earn a commission at no extra cost to you.</p></footer></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CustomGPT.ai AI Assistant Funnel</title><meta name="description" content="Find the right CustomGPT.ai use case and use coupon code ${esc(config.couponCode)}."><link rel="stylesheet" href="styles.css"></head><body><header class="topbar"><a href="index.html" class="brand">AI Assistant Offers</a><nav><a href="pages/ecommerce.html">Ecommerce</a><a href="pages/support.html">Support</a><a href="pages/agencies.html">Agencies</a></nav></header><main><section class="hero"><div><p class="eyebrow">${esc(config.couponLabel)}: ${esc(config.couponCode)}</p><h1>Build an AI assistant trained on your business content</h1><p class="lede">Use CustomGPT.ai to turn websites, help docs, PDFs, product pages, and FAQs into a no-code AI assistant for customers or teams.</p><div class="actions"><a class="button" href="pages/ecommerce.html">Start with ecommerce</a><a class="secondary" href="distribution.html">Get scheduler files</a></div></div><aside class="offer"><strong>Offer</strong><p>Use coupon code <b>${esc(config.couponCode)}</b> for the ${esc(config.couponLabel)}.</p><strong>Affiliate note</strong><p>Links on this site may earn a commission.</p></aside></section><section class="band"><h2>Choose a Use Case</h2><div class="niche-list">${links}</div></section></main><footer><p>Affiliate disclosure: this page contains affiliate links. If you sign up through a link, we may earn a commission at no extra cost to you.</p></footer></body></html>`;
 }
 
 const content = [['id','date','time','channel','niche','topic','post_text','landing_url','asset_file','status']];
 const scheduler = [['Date','Time','Platform','Post Text','Link','Image File','Campaign','Notes']];
+const byChannel = new Map(channels.map((c) => [c[0], [['Date','Time','Platform','Post Text','Link','Image File','Campaign','Notes']]]));
 const links = [['id','niche','topic','channel','landing_url','affiliate_url']];
-const sitePaths = ['/'];
+const sitePaths = ['/', '/distribution.html'];
 let n = 1;
 for (const niche of config.primaryNiches) {
   fs.writeFileSync(path.join(root, 'site/pages', `${niche.slug}.html`), page(niche));
@@ -83,10 +87,18 @@ for (const niche of config.primaryNiches) {
       const time = config.dailySlots[(n - 1) % config.dailySlots.length];
       const url = landingUrl(niche, channel, topic, id);
       const post = channel[0] === 'YouTube Shorts' ? `${topic[3]}\n\nShow the problem in one sentence, then show the fix: train a CustomGPT.ai assistant on approved business content. End with coupon code ${config.couponCode}.` : `${topic[3]} ${topic[2]} CustomGPT.ai can turn approved business content into a no-code AI assistant. Use coupon code ${config.couponCode}.`;
-      const asset = channel[2] === 'card' ? `assets/cards/${niche.slug}_${topic[0]}_${id}.svg` : '';
-      if (asset) fs.writeFileSync(path.join(root, asset), cardSvg(topic[1], niche.name));
-      content.push([id,date,time,channel[0],niche.name,topic[1],post,url,asset,'ready']);
-      scheduler.push([date,time,channel[0],post,url,asset,config.campaignName,`${config.couponLabel}: ${config.couponCode}`]);
+      const assetName = `${niche.slug}_${topic[0]}_${id}.svg`;
+      const localAsset = channel[2] === 'card' ? `assets/cards/${assetName}` : '';
+      const publicAsset = channel[2] === 'card' ? `${base}/assets/cards/${assetName}` : '';
+      if (localAsset) {
+        const svg = cardSvg(topic[1], niche.name);
+        fs.writeFileSync(path.join(root, localAsset), svg);
+        fs.writeFileSync(path.join(root, 'site/assets/cards', assetName), svg);
+      }
+      content.push([id,date,time,channel[0],niche.name,topic[1],post,url,localAsset,'ready']);
+      const row = [date,time,channel[0],post,url,publicAsset,config.campaignName,`${config.couponLabel}: ${config.couponCode}`];
+      scheduler.push(row);
+      byChannel.get(channel[0]).push(row);
       links.push([id,niche.name,topic[1],channel[0],url,affiliateUrl(niche, topic, channel)]);
       n++;
     }
@@ -94,6 +106,7 @@ for (const niche of config.primaryNiches) {
 }
 const today = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(path.join(root, 'site/index.html'), index());
+fs.writeFileSync(path.join(root, 'site/distribution.html'), distribution());
 fs.writeFileSync(path.join(root, 'site/styles.css'), styles());
 fs.writeFileSync(path.join(root, 'site/.nojekyll'), '');
 fs.writeFileSync(path.join(root, 'site/robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
@@ -103,6 +116,11 @@ const linksCsv = links.map((r) => r.map(csv).join(',')).join('\n');
 fs.writeFileSync(path.join(root, 'data/content.csv'), content.map((r) => r.map(csv).join(',')).join('\n'));
 fs.writeFileSync(path.join(root, 'exports/scheduler/customgpt_scheduler.csv'), schedulerCsv);
 fs.writeFileSync(path.join(root, 'site/exports/customgpt_scheduler.csv'), schedulerCsv);
+for (const [name, rows] of byChannel) {
+  const body = rows.map((r) => r.map(csv).join(',')).join('\n');
+  fs.writeFileSync(path.join(root, 'exports/scheduler', `${slug(name)}_scheduler.csv`), body);
+  fs.writeFileSync(path.join(root, 'site/exports', `${slug(name)}_scheduler.csv`), body);
+}
 fs.writeFileSync(path.join(root, 'data/links.csv'), linksCsv);
 fs.writeFileSync(path.join(root, 'site/exports/links.csv'), linksCsv);
 fs.writeFileSync(path.join(root, 'data/metrics.csv'), [['date','content_id','impressions','clicks','affiliate_clicks','signups','notes'].map(csv).join(',')].join('\n'));
